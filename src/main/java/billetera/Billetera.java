@@ -220,6 +220,9 @@ public class Billetera implements IBilletera {
 	@Override
 	public String consultarCvu(String alias) {
 		
+	if (!cuentasPorAlias.containsKey(alias)) {
+		throw new IllegalArgumentException("El alias no existe");
+	}
 	 Cuenta c= cuentasPorAlias.get(alias);
 	 
 	 String cvu = c.mostrarCvu();
