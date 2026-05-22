@@ -42,6 +42,10 @@ public class Usuario {
 		return cuentas;
 	}
 	
+	public Map <String, Cuenta> devolverGetCuentas() {
+		return getCuentas();
+	}
+	
 	public void agregarCuenta(String alias, Cuenta cuenta) {
 	    this.cuentas.put(alias, cuenta);
 	}

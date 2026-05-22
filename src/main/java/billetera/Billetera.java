@@ -6,6 +6,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 public class Billetera implements IBilletera {
 	
@@ -114,6 +115,7 @@ public class Billetera implements IBilletera {
 	}
 	
 	
+	
 	@Override
 	public String crearCuentaCorporativa(String dniUsuario, String alias, String cuitEmpresa) {
 		controlNuevaCuenta(dniUsuario,alias);
@@ -134,6 +136,7 @@ public class Billetera implements IBilletera {
 		
 		
 	}
+
 
 	@Override
 	public List<String> obtenerCuentas(String dniUsuario) {
@@ -177,9 +180,18 @@ public class Billetera implements IBilletera {
 		   
 		   cuentaOrigen.agregarActividad(transferencia.getIdActividad(), transferencia);
 		    cuentaDestino.agregarActividad(transferencia.getIdActividad(), transferencia);
+		   
+		    agregarActividadAHistorialGlobal(transferencia);
 
 	}
-
+	
+	private void agregarActividadAHistorialGlobal(Actividad actividad) {
+		
+		historialGlobal.put(actividad.mostrarIdActividad(), actividad);
+		
+	}
+	
+	
 	@Override
 	public int realizarInversionRentaFija(String dni, String cvu, double monto, int plazoDias) {
 		// TODO Auto-generated method stub
@@ -213,8 +225,15 @@ public class Billetera implements IBilletera {
 
 	@Override
 	public List<String> consultarHistorialGlobal() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<String> historial= new ArrayList<>();
+		
+		for(Actividad actividad : historialGlobal.values()) {
+		 historial.add(actividad.mostrarIdActividad());
+		}
+
+		return historial;
+	
 	}
 
 	@Override
@@ -235,8 +254,24 @@ public class Billetera implements IBilletera {
 
 	@Override
 	public List<String> consultarHistorialUsuario(String dniUsuario) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		List<String> historialDeCuentasDelUsuario= new ArrayList<>();
+		
+		Usuario u= usuarios.get(dniUsuario);
+		
+		Map<String, Cuenta> cuentasDelUsuario= u.devolverGetCuentas();
+
+		
+		for (Cuenta c : cuentasDelUsuario.values()) {
+			 Map <String, Actividad> historialCuentas= c.accesoGetHistorialCuenta(); 
+			 for(Actividad act: historialCuentas.values()) {
+				 historialDeCuentasDelUsuario.add(act.mostrarIdActividad());
+			 }
+			 
+			}
+		
+		
+		return historialDeCuentasDelUsuario;
 	}
 
 	@Override
