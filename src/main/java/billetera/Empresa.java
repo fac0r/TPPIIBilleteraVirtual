@@ -8,7 +8,7 @@ public class Empresa {
 	
 	private String nombre;
 	private String cuit;
-	private Map <String, Usuario> usuariosAutorizados = new HashMap<> ();
+	private Map <String, String> usuariosAutorizados = new HashMap<> (); //Es String String porque el usuario puede no ser cliente del banco.
 	private String telefono;
 	private String email;
 	private String nombreResponsable;
@@ -25,6 +25,19 @@ public class Empresa {
 		
 	}
 	
+	public void usuarioAutorizado (String dni) {
+		
+		if (!usuariosAutorizados.containsKey(dni)) {throw new IllegalArgumentException("El usuario no está autorizado");}
+	
+		
+		
+	}
+	
+	public  void agregarPersonaAutorizada(String dni) {
+		if (usuariosAutorizados.containsKey(dni)) throw new IllegalArgumentException("El usuario ya está autorizado");
+		usuariosAutorizados.put(dni, dni);
+		
+	}
 	
 
 

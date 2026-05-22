@@ -4,11 +4,15 @@ public class CuentaRegular extends Cuenta {
 	
 	
 
-	public CuentaRegular(String cvu, String alias, String idUsuarioPropietario, double saldoTotal) {
+	public CuentaRegular(String cvu, String alias, String idUsuarioPropietario) {
 		
-		super(cvu, alias,idUsuarioPropietario,saldoTotal);
+		super(cvu, alias,idUsuarioPropietario,ControlDeCuentas.INICIO);
 		
-		// TODO Auto-generated constructor stub
+		
+	}
+	
+	public static Cuenta crearCuentaRegular(String cvu, String alias, String dniUsuario) {
+	    return new CuentaRegular(cvu, alias, dniUsuario);
 	}
 
 	@Override

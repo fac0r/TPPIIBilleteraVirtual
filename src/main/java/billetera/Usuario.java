@@ -1,6 +1,8 @@
 package billetera;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class Usuario {
@@ -11,7 +13,7 @@ public class Usuario {
 	 private String nombre;
 	 private String telefono;
 	 private String email;
-	 private Map<String, Cuenta> cuentas = new HashMap<>();
+	 private Map<String, Cuenta> cuentas = new HashMap<>(); // CVU y CUENTA
 	
 
 	 
@@ -50,6 +52,17 @@ public class Usuario {
 	
 	public String getInfoCompleta() {
 	    return null;  //Aca podemos hacer algunos metodos para obtener los get que nos interesen sin exponer directamente los get.
+	}
+	
+	public List<String> obtenerMisCuentas() {
+		
+		List<String> misCuentas = new ArrayList<>();
+		
+		for(String c : cuentas.keySet() ) {
+			misCuentas.add(c);
+		}
+		
+		return  misCuentas ;
 	}
 
 	

@@ -16,13 +16,14 @@ public abstract class Cuenta {
 	 private double saldoInvertido;
 	 private Map <String, Actividad> historialCuenta = new HashMap<>();
 	 private int volumenTransacciones;
+	
 	 
 	 
 	 public Cuenta(String cvu, String alias, String idUsuarioPropietario, double saldoTotal) {
 			
 			this.setSaldoTotal(saldoTotal);
 			this.saldoDisponible= saldoTotal;
-			this.saldoInvertido=0;
+			this.saldoInvertido=ControlDeCuentas.INICIO;
 			this.cvu = cvu;
 			this.alias = alias;
 			this.idUsuarioPropietario = idUsuarioPropietario;
@@ -125,9 +126,16 @@ public abstract class Cuenta {
 
 
 
+	public double  obtenerSaldoDisponible() {
+		
+		double saldoDispoible= saldoTotal - saldoInvertido;
+		
+		return saldoDispoible;
+		
+	}
+
+
+
+
 	
-	 
-	 
-	 
- 
 }
