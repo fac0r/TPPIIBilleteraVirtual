@@ -1,8 +1,27 @@
 package billetera;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class Billetera implements IBilletera {
+	
+	private Map<String, Usuario> usuarios = new HashMap<>();
+	private Map<String, Inversion> inversiones= new HashMap<>();
+	private Map<String, Transferencia> transferencias = new HashMap<>();
+	private   Map<String, Actividad> historialGlobal= new HashMap<>();
+	private   Map<String, Empresa> empresas= new HashMap<>();
+	private Map<String, Cuenta> cuentasPorCvu = new HashMap<>();
+	private Map<String, Cuenta> cuentasPorAlias = new HashMap<>();
+	
+	
+	
+
+	public Billetera() {
+		
+	}
+	
+	
 
 	@Override
 	public void registrarEmpresa(String cuit, String nombreFantasia, String telefono, String email,
