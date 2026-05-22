@@ -219,8 +219,12 @@ public class Billetera implements IBilletera {
 
 	@Override
 	public String consultarCvu(String alias) {
-		// TODO Auto-generated method stub
-		return null;
+		
+	 Cuenta c= cuentasPorAlias.get(alias);
+	 
+	 String cvu = c.mostrarCvu();
+		
+	 return cvu;
 	}
 
 	@Override

@@ -67,7 +67,7 @@ public abstract class Cuenta {
 	 
 	 public void recibirTransferencia (double monto) {
 		 if (!validarMonto(monto, getSaldoTotal())){
-			 throw new IllegalArgumentException ("Para ingresar ese monto debe aumentar la categoria de su cuenta");
+			 throw new IllegalStateException ("Para ingresar ese monto debe aumentar la categoria de su cuenta");
 		}
 		 setSaldoTotal(getSaldoTotal()+monto);
 		 actualizarSaldoDisponible();
@@ -75,7 +75,8 @@ public abstract class Cuenta {
 	 }
 
 	 
-	
+
+		
 	
 
 	public abstract boolean validarMonto(double monto, double saldoActual);
@@ -131,12 +132,17 @@ public abstract class Cuenta {
 		return cvu;
 	}
 
-
+	public String mostrarCvu() {
+		return getCvu();
+	}
 
 	private String getAlias() {
 		return alias;
 	}
 
+	public String mostrarAlias() {
+		return getAlias();
+	}
 
 
 	private String getIdUsuarioPropietario() {
