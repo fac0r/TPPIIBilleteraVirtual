@@ -1,15 +1,16 @@
 package billetera;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 public class RentaFija extends Inversion {
 	
 	public static final double TASA_INTERES = 0.20;
-	private Date fechaDeVencimiento;
+	private LocalDate fechaDeVencimiento;
 	
 
-	public RentaFija(String cvuAsociado, boolean precancelable,int plazoDias, Date fecha, double monto, String detalle,
-			 Date fechaDeVencimiento) {
+	public RentaFija(String cvuAsociado, boolean precancelable,int plazoDias, LocalDate fecha, double monto, String detalle,
+			 LocalDate fechaDeVencimiento) {
 		super( cvuAsociado, precancelable, TASA_INTERES ,plazoDias , fecha, monto, detalle, TipoDeInversion.RENTAFIJA); 
 		
 			this.fechaDeVencimiento=fechaDeVencimiento;

@@ -25,6 +25,16 @@ public class CuentaCorporativa extends Cuenta {
 	public String toString() {
 	    return super.toString() + " CuentaCorporativa [empresaAsociada=" + empresaAsociada + "]";
 	}
+
+
+
+	@Override
+	public boolean validarMonto(double monto, double saldoActual) {
+		
+		return true;
+		// TODO Auto-generated method stub
+		
+	}
     
 
 }

@@ -25,8 +25,23 @@ public class CuentaPremium extends Cuenta {
 	}
 
 	@Override
+	public void actualizarSaldoDisponible() {
+		 
+		 setSaldoDisponible(getSaldoTotal()-getSaldoInvertido()- encaje);
+		 
+	 }
+	 
+	@Override
 	public String toString() {
 		return "CuentaPremium [toString()=" + super.toString() + "]";
+	}
+
+
+	@Override
+	public boolean validarMonto(double monto, double montoActual) {
+		
+		return true;
+		
 	}
 
 	

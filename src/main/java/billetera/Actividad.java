@@ -1,17 +1,17 @@
 package billetera;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public abstract class Actividad {
 	
 	private String idActividad;
-	private Date fecha;
+	private LocalDate fecha;
 	private String tipoOperacion;  //debe ser ("INVERSION O TRANSFERENCIA") 
 	private double monto; 
 	private String detalle;
 	
 	
-	public Actividad(String idActividad, Date fecha, String tipoOperacion, double monto, String detalle) {
+	public Actividad(String idActividad, LocalDate fecha, String tipoOperacion, double monto, String detalle) {
 		
 		this.idActividad = idActividad;
 		this.fecha = fecha;
@@ -19,6 +19,75 @@ public abstract class Actividad {
 		this.monto = monto;
 		this.detalle = detalle;
 	}
+
+
+	
+	
+	
+	private String getIdActividad() {
+		return idActividad;
+	}
+
+	public String mostrarIdActividad() {
+		return getIdActividad();
+	}
+   
+	
+
+
+
+	private String getTipoOperacion() {
+		return tipoOperacion;
+	}
+
+
+	public String mostrarTipoOperacion() {
+		return getTipoOperacion();
+	}
+
+
+
+	private double getMonto() {
+		return monto;
+	}
+
+	public String mostrarMonto() {
+		 return String.valueOf(getMonto());
+	} 
+
+
+
+
+	private LocalDate getFecha() {
+		return fecha;
+	}
+	
+	public LocalDate mostrarFecha() {
+		return getFecha();
+	}
+
+
+
+
+
+	private String getDetalle() {
+		return detalle;
+	}
+	
+	public String mostrarDetalle() {
+		return getDetalle();
+	}
+
+
+
+
+
+	private void setFecha(LocalDate fecha) {
+		this.fecha = fecha;
+	}
+
+
+
 
 
 	@Override

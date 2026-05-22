@@ -1,6 +1,7 @@
 package billetera;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 public abstract class Inversion extends Actividad {
 	
@@ -14,7 +15,7 @@ public abstract class Inversion extends Actividad {
 	private String tipoDeInversion;
 
 
-	public Inversion(String cvuAsociado,boolean precancelable,double tasaInteres,int plazoDias,  Date fecha, double monto, String detalle,  String tipoDeInversion) {
+	public Inversion(String cvuAsociado,boolean precancelable,double tasaInteres,int plazoDias,  LocalDate fecha, double monto, String detalle,  String tipoDeInversion) {
 		super(generarId(), fecha, TipoOperacion.INVERSION, monto, detalle);
 		
 		this.cvuAsociado=cvuAsociado;

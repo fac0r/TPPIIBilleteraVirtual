@@ -32,16 +32,62 @@ public abstract class Cuenta {
 			
 		}
 	 
+	
+	 
+	 public void actualizarSaldoDisponible() {
+		    saldoDisponible = saldoTotal - saldoInvertido;
+		}
+	 
+	 private void reducirSaldoTotal(double monto) {
+		 double saldoTotal= getSaldoTotal() - monto;
+		 setSaldoTotal(saldoTotal);
+		 
+	 }
+	 
+	 private boolean  hayDisponibilidadParaTransferir (double monto) {
+		 
+		 return getSaldoDisponible() >= monto;
+		 
+	 }
+	 
+	 
+	 
+	 public void emitirTransferencia (double monto) {
+		 
+		 if (!hayDisponibilidadParaTransferir(monto)) {
+			 
+			 throw new IllegalArgumentException ("No hay suficiente saldo disponible");
+			 	 
+		 }
+		 reducirSaldoTotal(monto);
+		 actualizarSaldoDisponible();
+		
+	
+	 }
+	 
+	 public void recibirTransferencia (double monto) {
+		 if (!validarMonto(monto, getSaldoTotal())){
+			 throw new IllegalArgumentException ("Para ingresar ese monto debe aumentar la categoria de su cuenta");
+		}
+		 setSaldoTotal(getSaldoTotal()+monto);
+		 actualizarSaldoDisponible();
+		 
+	 }
 
 	 
-	 private double getSaldoDisponible() {
+	
+	
+
+	public abstract boolean validarMonto(double monto, double saldoActual);
+
+	public double getSaldoDisponible() {
 		return saldoDisponible;
 	}
 
 
 
-	private void setSaldoDisponible(double saldoDisponible) {
-		this.saldoDisponible = saldoDisponible;
+	public void setSaldoDisponible(double saldoDisponible) {
+		this.saldoDisponible = saldoTotal - saldoInvertido;
 	}
 	
 	public void actualizarSaldoDisponible(double saldoDisponible) {
@@ -50,10 +96,13 @@ public abstract class Cuenta {
 
 
 
-	private double getSaldoInvertido() {
+	public double getSaldoInvertido() {   //Es public para que el metodo actualizar SaldoDisponible de la cuentaPremium los pueda usar 
 		return saldoInvertido;
 	}
 
+	public double llamarGetSaldoInvertido() {
+		return getSaldoInvertido();
+	}
 
 
 	private void setSaldoInvertido(double saldoInvertido) {
@@ -94,10 +143,13 @@ public abstract class Cuenta {
 		return idUsuarioPropietario;
 	}
 
-	private double getSaldoTotal() {
+	public double getSaldoTotal() {
 		return saldoTotal;
 	}
 
+	public double llamarGetSaldoTotal() {
+		return getSaldoTotal();
+	}
 
 
 	private void setSaldoTotal(double saldoTotal) {
@@ -109,7 +161,11 @@ public abstract class Cuenta {
 		return historialCuenta;
 	}
 
-
+    public Map<String, Actividad> accesoGetHistorialCuenta() {
+		
+    	Map<String, Actividad> historialCuenta= getHistorialCuenta() ;
+    	
+    	return historialCuenta;}
 
 	public void agregarActividad(String id, Actividad actividad) {
 		    this.historialCuenta.put(id, actividad);

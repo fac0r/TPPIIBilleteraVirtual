@@ -20,5 +20,13 @@ public class CuentaRegular extends Cuenta {
 		return "CuentaRegular [toString()=" + super.toString() + "]";
 	}
 
+	@Override
+	public boolean validarMonto(double monto, double saldoActual) {
+		
+		return  saldoActual+monto < ControlDeCuentas.MAXIMOCUENTAREGULAR;
+		
+		
+	}
+
 
 }

@@ -1,5 +1,8 @@
 package billetera;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -150,9 +153,30 @@ public class Billetera implements IBilletera {
 		return saldoDisponible;
 	}
 
+	
+	private Transferencia crearActividadTransferencia (String cuentaOrigen,String cuentaDestino, double monto, boolean comprobante) 
+	{
+		return Transferencia.crearTransferencia(cuentaOrigen,cuentaDestino, monto, comprobante);
+		
+	}
+	
 	@Override
 	public void realizarTransferencia(String cvuOrigen, String cvuDestino, double monto) {
-		// TODO Auto-generated method stub
+		
+		  Cuenta cuentaOrigen = cuentasPorCvu.get(cvuOrigen);
+		  Cuenta cuentaDestino = cuentasPorCvu.get(cvuDestino);
+		  
+		  cuentaOrigen.emitirTransferencia(monto);
+		  cuentaDestino.recibirTransferencia(monto);
+		  
+		  LocalDate fecha= Utilitarios.hoy();
+		 
+		  boolean comprobante=true;
+		  
+		   Transferencia transferencia =crearActividadTransferencia(cvuOrigen, cvuDestino, monto, comprobante);	
+		   
+		   cuentaOrigen.agregarActividad(transferencia.getIdActividad(), transferencia);
+		    cuentaDestino.agregarActividad(transferencia.getIdActividad(), transferencia);
 
 	}
 
@@ -195,8 +219,18 @@ public class Billetera implements IBilletera {
 
 	@Override
 	public List<String> consultarHistorialCuenta(String cvu) {
-		// TODO Auto-generated method stub
-		return null;
+		
+		if (!cuentasPorCvu.containsKey(cvu))
+	        throw new IllegalArgumentException("La cuenta no existe");
+	    
+	    Cuenta cuenta = cuentasPorCvu.get(cvu);
+	    List<String> historial = new ArrayList<>();
+	    
+	    for (Actividad actividad : cuenta.accesoGetHistorialCuenta().values()) {
+	        historial.add(actividad.toString());
+	    }
+	    
+	    return historial;
 	}
 
 	@Override

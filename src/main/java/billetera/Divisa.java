@@ -1,6 +1,7 @@
 package billetera;
 
-import java.util.Date;
+import java.time.LocalDate;
+
 
 public class Divisa extends Inversion {
 	
@@ -11,7 +12,7 @@ public class Divisa extends Inversion {
 	    
 	
 	    
-	    public Divisa(String cvuAsociado, boolean precancelable,double tasaInteres,int plazoDias, Date fecha, double monto, String detalle,
+	    public Divisa(String cvuAsociado, boolean precancelable,double tasaInteres,int plazoDias, LocalDate fecha, double monto, String detalle,
 				 String tipoDivisa, double precioDivisa) {
 			super( cvuAsociado, precancelable,tasaInteres,plazoDias , fecha, monto, detalle, TipoDeInversion.DIVISA);
 			
