@@ -191,13 +191,31 @@ public class Billetera implements IBilletera {
 		
 	}
 	
-	
+	//Este metodo cambia de String a int el id de la actividad
+	private int formatearIdDeInversionesYTransferencias(String idDeLaActividad) {
+	    int id =  Integer.parseInt(idDeLaActividad);
+	    return id;
+	}
 	@Override
 	public int realizarInversionRentaFija(String dni, String cvu, double monto, int plazoDias) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		RentaFija inversion=  RentaFija.crearInversion(dni, cvu, monto, plazoDias); 
+		
+		String idDeLaInversion = inversion.mostrarIdActividad();
+		System.out.println("ASI SE IMPRIME EL ID ACTIVIDAD");
+		System.out.println(idDeLaInversion);
+		int id= formatearIdDeInversionesYTransferencias (idDeLaInversion);
+		System.out.println("ASI SE IMPRIME EL ID LUEGO DEL FORMATEO");
+		System.out.println(id);
+		
+		Cuenta c= cuentasPorCvu.get(cvu);
+		c.realizarInversion(monto);
+		
+		c.agregarActividad(inversion.getIdActividad(), inversion);
+		
+		return id;
 	}
-
+;
 	@Override
 	public int realizarInversionDivisa(String dni, String cvu, double monto, int plazoDias, String divisa,
 			double tasa) {
@@ -213,7 +231,8 @@ public class Billetera implements IBilletera {
 
 	@Override
 	public void precancelarInversion(String dni, String cvu, int idInversion) {
-		// TODO Auto-generated method stub
+		
+		
 
 	}
 

@@ -9,7 +9,7 @@ public class CuentaPremium extends Cuenta {
 	public CuentaPremium(String cvu, String alias, String idUsuarioPropietario, double depositoInicial
            ) {
 
-    			super(cvu, alias, idUsuarioPropietario, depositoInicial);
+    			super(cvu, alias, idUsuarioPropietario, depositoInicial,ControlDeCuentas.TIPOPREMIUM);
     			
     		}
 	

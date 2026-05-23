@@ -6,7 +6,7 @@ public class CuentaRegular extends Cuenta {
 
 	public CuentaRegular(String cvu, String alias, String idUsuarioPropietario) {
 		
-		super(cvu, alias,idUsuarioPropietario,ControlDeCuentas.INICIO);
+		super(cvu, alias,idUsuarioPropietario,ControlDeCuentas.INICIO, ControlDeCuentas.TIPOREGULAR);
 		
 		
 	}

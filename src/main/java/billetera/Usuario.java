@@ -58,13 +58,33 @@ public class Usuario {
 	    return null;  //Aca podemos hacer algunos metodos para obtener los get que nos interesen sin exponer directamente los get.
 	}
 	
+	private StringBuilder devolverFormatoMisCuentasUsuario (String tipo, String alias, String cvu) {
+
+		
+		StringBuilder cuenta = new StringBuilder(); 
+		cuenta.append(tipo);
+		cuenta.append(": ");
+		cuenta.append(alias);
+		cuenta.append(": ");
+		cuenta.append(cvu);
+		
+		return cuenta;
+	}
+	
 	public List<String> obtenerMisCuentas() {
 		
 		List<String> misCuentas = new ArrayList<>();
 		
-		for(String c : cuentas.keySet() ) {
-			misCuentas.add(c);
+		for(Cuenta c : cuentas.values() ) {
+			String tipo= c.obtenerTipoDeCuenta();
+			String alias= c.mostrarAlias();
+			String cvu= c.mostrarCvu();
+			StringBuilder datosCuenta= devolverFormatoMisCuentasUsuario(tipo, alias, cvu);
+			
+			misCuentas.add(datosCuenta.toString());
 		}
+		System.out.println("SE IMPRIME COMO DEVUELVE LAS CUENTAS EL USUARIO");
+		System.out.println(misCuentas);
 		
 		return  misCuentas ;
 	}

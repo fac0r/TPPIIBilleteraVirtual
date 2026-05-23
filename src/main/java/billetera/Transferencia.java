@@ -4,7 +4,7 @@ import java.time.LocalDate;
 
 public class Transferencia extends Actividad {
 	
-	private static int contadorTransferencias = 0;
+	
 	private  String cuentaOrigen;
 	private  String cuentaDestino;
 	private  String situacion; //Pensar que hacer con situacion para el constructor
@@ -28,12 +28,7 @@ public class Transferencia extends Actividad {
 		    return new Transferencia(fecha, monto, "CREAR DESCRIPCION DE TRANSFERENCIA", cvuOrigen, cvuDestino, comprobante);
 		}
 	 
-	private static String generarId() {
-		contadorTransferencias++;
-		return "T" + (contadorTransferencias );
-		
-	}
-
+	
 
 	private String comprobanteSituacion(boolean comprobante) {
 		 if (comprobante) {

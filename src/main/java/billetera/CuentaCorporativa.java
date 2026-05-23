@@ -7,7 +7,7 @@ public class CuentaCorporativa extends Cuenta {
     public CuentaCorporativa(String cvu, String alias, String idUsuarioPropietario,
             String empresaAsociada) {
 
-    			super(cvu, alias, idUsuarioPropietario, ControlDeCuentas.INICIO);
+    			super(cvu, alias, idUsuarioPropietario, ControlDeCuentas.INICIO, ControlDeCuentas.TIPOCORPORATIVA);
     				this.empresaAsociada = empresaAsociada;
     		}
     

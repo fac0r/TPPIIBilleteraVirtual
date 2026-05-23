@@ -11,6 +11,7 @@ public abstract class Cuenta {
 	private String cvu;
 	 private String alias;
 	 private String idUsuarioPropietario;
+	 private String tipoDeCuenta;
 	 private double saldoTotal;
 	 private double saldoDisponible;
 	 private double saldoInvertido;
@@ -19,7 +20,7 @@ public abstract class Cuenta {
 	
 	 
 	 
-	 public Cuenta(String cvu, String alias, String idUsuarioPropietario, double saldoTotal) {
+	 public Cuenta(String cvu, String alias, String idUsuarioPropietario, double saldoTotal, String tipoDeCuenta) {
 			
 			this.setSaldoTotal(saldoTotal);
 			this.saldoDisponible= saldoTotal;
@@ -28,13 +29,22 @@ public abstract class Cuenta {
 			this.alias = alias;
 			this.idUsuarioPropietario = idUsuarioPropietario;
 			this.volumenTransacciones=0;
+			this.tipoDeCuenta=tipoDeCuenta;
 		
 			
 		}
 	 
 	
 	 
-	 public void actualizarSaldoDisponible() {
+	 private String getTipoDeCuenta() {
+		return tipoDeCuenta;
+	}
+
+	 public String obtenerTipoDeCuenta() {
+		 return getTipoDeCuenta();
+	 }
+
+	public void actualizarSaldoDisponible() {
 		    saldoDisponible = saldoTotal - saldoInvertido;
 		}
 	 
@@ -44,21 +54,28 @@ public abstract class Cuenta {
 		 
 	 }
 	 
-	 private boolean  hayDisponibilidadParaTransferir (double monto) {
+	 private boolean  hayDisponibilidadParaRealizarOperacion (double monto) {
 		 
 		 return getSaldoDisponible() >= monto;
 		 
 	 }
 	 
-	 
-	 
-	 public void emitirTransferencia (double monto) {
+	 public void realizarInversion (double monto) {
 		 
-		 if (!hayDisponibilidadParaTransferir(monto)) {
+		 if (!hayDisponibilidadParaRealizarOperacion(monto)) {
 			 
 			 throw new IllegalArgumentException ("No hay suficiente saldo disponible");
 			 	 
-		 }
+		 };
+	 }
+	 
+	 public void emitirTransferencia (double monto) {
+		 
+		 if (!hayDisponibilidadParaRealizarOperacion(monto)) {
+			 
+			 throw new IllegalArgumentException ("No hay suficiente saldo disponible");
+			 	 
+		 }// Este metodo es para no entrar directo al Set
 		 reducirSaldoTotal(monto);
 		 actualizarSaldoDisponible();
 		
@@ -91,9 +108,7 @@ public abstract class Cuenta {
 		this.saldoDisponible = saldoTotal - saldoInvertido;
 	}
 	
-	public void actualizarSaldoDisponible(double saldoDisponible) {
-		// Este metodo es para no entrar directo al Set
-	}
+	
 
 
 
@@ -108,6 +123,7 @@ public abstract class Cuenta {
 
 	private void setSaldoInvertido(double saldoInvertido) {
 		this.saldoInvertido = saldoInvertido;
+		actualizarSaldoDisponible();
 	}
 	
 	public void setearSaldoInvertido (double saldoInvertido) {}
@@ -172,9 +188,21 @@ public abstract class Cuenta {
     	Map<String, Actividad> historialCuenta= getHistorialCuenta() ;
     	
     	return historialCuenta;}
-
+    
+    
+    private void actualizarSaldoInvertido(double saldo) {
+    	setSaldoInvertido(getSaldoInvertido()+ saldo);
+    	
+    }
+    
 	public void agregarActividad(String id, Actividad actividad) {
+		
+ 
 		    this.historialCuenta.put(id, actividad);
+		    if (actividad instanceof Inversion ) {
+		    	double monto = Double.parseDouble(actividad.mostrarMonto());
+		    	this.actualizarSaldoInvertido(monto);
+		    }
 		}
 
 

@@ -4,6 +4,8 @@ import java.time.LocalDate;
 
 public abstract class Actividad {
 	
+	
+	private static int contadorActividad = 0;
 	private String idActividad;
 	private LocalDate fecha;
 	private String tipoOperacion;  //debe ser ("INVERSION O TRANSFERENCIA") 
@@ -20,6 +22,12 @@ public abstract class Actividad {
 		this.detalle = detalle;
 	}
 
+
+	public static String generarId() {
+	    contadorActividad++;
+	    String id = String.valueOf(contadorActividad);
+	    return id;
+	}
 
 	
 	
