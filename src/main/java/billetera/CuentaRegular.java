@@ -17,7 +17,7 @@ public class CuentaRegular extends Cuenta {
 
 	@Override
 	public String toString() {
-		return "CuentaRegular [toString()=" + super.toString() + "]";
+		return "CuentaRegular [" + super.toString() + "]";
 	}
 
 	@Override

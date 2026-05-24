@@ -63,7 +63,9 @@ public abstract class Actividad {
 		 return String.valueOf(getMonto());
 	} 
 
-
+	public double  mostrarMontoDouble() {
+		 return getMonto();
+	} 
 
 
 	private LocalDate getFecha() {
@@ -89,10 +91,6 @@ public abstract class Actividad {
 
 
 
-
-	private void setFecha(LocalDate fecha) {
-		this.fecha = fecha;
-	}
 
 
 

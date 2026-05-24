@@ -9,7 +9,8 @@ public class ControlDeCuentas {
     public static final String TIPOREGULAR= "Regular";
     public static final String TIPOPREMIUM= "Premium";
     public static final String TIPOCORPORATIVA= "Corporativa";
-  
+   
+    
     
 
 }

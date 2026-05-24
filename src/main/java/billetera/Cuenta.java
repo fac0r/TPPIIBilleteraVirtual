@@ -48,9 +48,10 @@ public abstract class Cuenta {
 		    saldoDisponible = saldoTotal - saldoInvertido;
 		}
 	 
-	 private void reducirSaldoTotal(double monto) {
+	 public void reducirSaldoTotal(double monto) {
 		 double saldoTotal= getSaldoTotal() - monto;
 		 setSaldoTotal(saldoTotal);
+		 actualizarSaldoDisponible();
 		 
 	 }
 	 
@@ -67,6 +68,7 @@ public abstract class Cuenta {
 			 throw new IllegalArgumentException ("No hay suficiente saldo disponible");
 			 	 
 		 };
+		 actualizarVolumenTransacciones ();
 	 }
 	 
 	 public void emitirTransferencia (double monto) {
@@ -78,7 +80,7 @@ public abstract class Cuenta {
 		 }// Este metodo es para no entrar directo al Set
 		 reducirSaldoTotal(monto);
 		 actualizarSaldoDisponible();
-		
+		 actualizarVolumenTransacciones ();
 	
 	 }
 	 
@@ -88,7 +90,7 @@ public abstract class Cuenta {
 		}
 		 setSaldoTotal(getSaldoTotal()+monto);
 		 actualizarSaldoDisponible();
-		 
+		 actualizarVolumenTransacciones ();
 	 }
 
 	 
@@ -109,7 +111,7 @@ public abstract class Cuenta {
 	}
 	
 	
-
+ 
 
 
 	public double getSaldoInvertido() {   //Es public para que el metodo actualizar SaldoDisponible de la cuentaPremium los pueda usar 
@@ -126,21 +128,32 @@ public abstract class Cuenta {
 		actualizarSaldoDisponible();
 	}
 	
-	public void setearSaldoInvertido (double saldoInvertido) {}
+	public void restarSaldoInvertido (double saldo) {
+		
+		setSaldoInvertido(saldoInvertido - saldo);
+	}
 
-
+public void aumentarSaldoInvertido (double saldo) {
+		
+		setSaldoInvertido(saldoInvertido + saldo);
+	}
 
 	private int getVolumenTransacciones() {
 		return volumenTransacciones;
 	}
+	
+	public int obtenerVolumenTransacciones() { 
+	return getVolumenTransacciones();}
 
 
 
-	private void setVolumenTransacciones(int volumenTransacciones) {
-		this.volumenTransacciones = volumenTransacciones;
+	private void setVolumenTransacciones() {
+		this.volumenTransacciones = volumenTransacciones +1;
 	}
 	
-	public void actualizarVolumenTransacciones (int volumenTransacciones) {}
+	public void actualizarVolumenTransacciones () {
+		setVolumenTransacciones();
+	}
 
 
 
@@ -165,9 +178,15 @@ public abstract class Cuenta {
 		return idUsuarioPropietario;
 	}
 
-	public double getSaldoTotal() {
+	private double getSaldoTotal() {
 		return saldoTotal;
 	}
+	
+	public double obtenerSaldoTotal() {
+		return getSaldoTotal();
+	}
+	
+	
 
 	public double llamarGetSaldoTotal() {
 		return getSaldoTotal();
@@ -178,6 +197,12 @@ public abstract class Cuenta {
 		this.saldoTotal = saldoTotal;
 	}
 
+	public void aumentarSaldoTotal (double monto) {
+		setSaldoTotal(saldoTotal + monto);
+		actualizarSaldoDisponible();
+	}
+	
+	
 
 	private Map<String, Actividad> getHistorialCuenta() {
 		return historialCuenta;

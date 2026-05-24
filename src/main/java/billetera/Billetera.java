@@ -199,6 +199,10 @@ public class Billetera implements IBilletera {
 	@Override
 	public int realizarInversionRentaFija(String dni, String cvu, double monto, int plazoDias) {
 		
+		
+		
+	
+		
 		RentaFija inversion=  RentaFija.crearInversion(dni, cvu, monto, plazoDias); 
 		
 		String idDeLaInversion = inversion.mostrarIdActividad();
@@ -212,6 +216,10 @@ public class Billetera implements IBilletera {
 		c.realizarInversion(monto);
 		
 		c.agregarActividad(inversion.getIdActividad(), inversion);
+		System.out.println("AHORA IMPRIMO LA ACTIVIDAD INVERSION RENTA FIJA");
+		System.out.println(inversion.toString());
+		
+		
 		
 		return id;
 	}
@@ -219,19 +227,80 @@ public class Billetera implements IBilletera {
 	@Override
 	public int realizarInversionDivisa(String dni, String cvu, double monto, int plazoDias, String divisa,
 			double tasa) {
-		// TODO Auto-generated method stub
-		return 0;
+		Divisa inversion = Divisa.crearInversion(dni, cvu, monto, plazoDias,divisa,tasa); 
+		String idDeLaInversion = inversion.mostrarIdActividad();
+		System.out.println("ASI SE IMPRIME EL ID ACTIVIDAD");
+		System.out.println(idDeLaInversion);
+		int id= formatearIdDeInversionesYTransferencias (idDeLaInversion);
+		System.out.println("ASI SE IMPRIME EL ID LUEGO DEL FORMATEO");
+		System.out.println(id);
+		Cuenta c= cuentasPorCvu.get(cvu);
+		c.realizarInversion(monto);
+		c.agregarActividad(inversion.getIdActividad(), inversion);
+		System.out.println("AHORA IMPRIMO UNA ACTIVIDAD INVERSION DIVISA");
+		System.out.println(inversion.toString());
+		
+		return id;
 	}
 
 	@Override
 	public int realizarInversionLiquidez(String dni, String cvu, double monto, int plazoDias) {
-		// TODO Auto-generated method stub
-		return 0;
+		
+		Cuenta c= cuentasPorCvu.get(cvu);
+		
+		if(c.obtenerTipoDeCuenta()!=ControlDeCuentas.TIPOCORPORATIVA) {
+			throw new IllegalArgumentException ("Solo se puede invertir desde cuentas corporativas");
+		}
+		
+		if (monto< FondoLiquidez.MONTO_MINIMO) {
+			throw new IllegalArgumentException ("El monto minimo para inversiones de Fondo de Liquidez es 20 millones");
+		}
+		FondoLiquidez inversion = FondoLiquidez.crearInversion(dni, cvu, monto, plazoDias); 
+		String idDeLaInversion = inversion.mostrarIdActividad();
+		System.out.println("ASI SE IMPRIME EL ID ACTIVIDAD");
+		System.out.println(idDeLaInversion);
+		int id= formatearIdDeInversionesYTransferencias (idDeLaInversion);
+		System.out.println("ASI SE IMPRIME EL ID LUEGO DEL FORMATEO");
+		System.out.println(id);
+	
+		c.realizarInversion(monto);
+		c.agregarActividad(inversion.getIdActividad(), inversion);
+		System.out.println("AHORA IMPRIMO UNA ACTIVIDAD INVERSION FONDO DE LIQUIDEZ");
+		System.out.println(inversion.toString());
+		
+		return id;
+	}
+	
+	private void inversionExiste(Cuenta c, int idInversion) {
+		String id = String.valueOf(idInversion);
+		
+		Map <String, Actividad> actividadesDeLaCuenta=c.accesoGetHistorialCuenta();
+		
+		if (!actividadesDeLaCuenta.containsKey(id)) {
+			throw new IllegalArgumentException("El id  de la inversion No existe");
+		}
 	}
 
 	@Override
 	public void precancelarInversion(String dni, String cvu, int idInversion) {
 		
+		
+		
+		Cuenta c = cuentasPorCvu.get(cvu);
+		
+		inversionExiste(c, idInversion);
+		
+		String id = String.valueOf(idInversion);
+		Map <String, Actividad> actividadesDeLaCuenta=c.accesoGetHistorialCuenta();
+		Inversion inversion = (Inversion)actividadesDeLaCuenta.get(id);
+		
+	
+		double rendimiento = inversion.precancelar();
+		
+		
+		
+		c.restarSaldoInvertido(inversion.mostrarMontoDouble());
+		c.aumentarSaldoTotal(rendimiento);
 		
 
 	}
@@ -302,14 +371,47 @@ public class Billetera implements IBilletera {
 
 	@Override
 	public double obtenerTotalInvertido(String dniUsuario) {
-		// TODO Auto-generated method stub
-		return 0;
+
+		Usuario u= usuarios.get(dniUsuario);
+		double total = u.obtenerTotalInvertido();
+
+		return total;
 	}
 
+	private List<Cuenta> ordenarCuentasPorVolumen ()  {
+		
+		List<Cuenta> cuentas = new ArrayList<>(cuentasPorCvu.values());
+
+	    for (int i = 0; i < cuentas.size(); i++) {
+	        for (int j = i + 1; j < cuentas.size(); j++) {
+	            if (cuentas.get(j).obtenerVolumenTransacciones() > cuentas.get(i).obtenerVolumenTransacciones()) {
+	                Cuenta auxiliar = cuentas.get(i);
+	                cuentas.set(i, cuentas.get(j));
+	                cuentas.set(j, auxiliar);
+	            }
+	        }
+	    }
+
+	    return cuentas;
+	}
+
+ 	
 	@Override
 	public List<String> cuentasConMayorVolumen(int cantidadTop) {
-		// TODO Auto-generated method stub
-		return null;
-	}
+		List <String> cuentasConMayorVolumen= new ArrayList<>();
+		List <Cuenta> cuentasOrdenadas = ordenarCuentasPorVolumen();
+		
+		int cont=0;
+		for(Cuenta c : cuentasOrdenadas) {
+			if (cont<cantidadTop) {
+				cuentasConMayorVolumen.add(c.mostrarCvu());
+				cont++;
+			}
+			
+		}
+		return cuentasConMayorVolumen;
+		}
+		
+	
 
 }

@@ -7,4 +7,5 @@ public class TipoDeInversion {
     public static final String FND = "FONDO DE LIQUIDEZ";
     public static final boolean PRECANCELABLE= true;
     public static final boolean NOPRECANCELABLE=false;
+    public static final double FLE= 0.8;
 }

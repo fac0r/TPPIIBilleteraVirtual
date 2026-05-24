@@ -1,12 +1,15 @@
 package billetera;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 
 public abstract class Inversion extends Actividad {
 	
 	
 	
+
+
 	private String dniAsociado;
 	private String cvuAsociado;
 	private boolean precancelable;
@@ -31,7 +34,32 @@ public abstract class Inversion extends Actividad {
 	
 	}
 	
+
+
+	  public int cantidadDeDiasTranscurridosEnInversion(LocalDate fechaInicio, LocalDate fechaDeCancelacion) {
+		   
+		   return (int) ChronoUnit.DAYS.between(fechaInicio, fechaDeCancelacion);  //Esto lo sacamos de la AI 
+	   }
 	
+
+	private String getEstadoInversion() {
+		return estadoInversion;
+	}
+
+
+
+
+
+	private void setEstadoInversion(String estadoInversion) {
+		this.estadoInversion = estadoInversion;
+	}
+
+ 
+	public void cambiarEstadoDeInversion (String estadoInversion) {
+		setEstadoInversion(estadoInversion);
+	}
+
+
 
 	public static LocalDate calcularFechaDeVencimiento(int cantDias) {
 		 
@@ -46,14 +74,34 @@ public abstract class Inversion extends Actividad {
 			return  mostrarIdActividad();
 		}
 		
+	
+
+	private double getTasaInteres() {
+			return tasaInteres;
+		}
+
+	public double mostrarTasaInteres() {
+		return getTasaInteres();
+		}
+	
+		
+	public abstract double  calcularRentabilidadDeInversion (LocalDate fechaDeCancelacion);
+		
+	public abstract double precancelar();
+
+		
 	 
 
 	@Override
 	public String toString() {
-		return "Inversion [cvuAsociado=" + cvuAsociado + ", precancelable=" + precancelable + ", estadoInversion="
+		return "Inversion [" + super.toString() + "cvuAsociado= "  + cvuAsociado + 
+				", precancelable=" + precancelable + ", estadoInversion="
 				+ estadoInversion + ", tasaInteres=" + tasaInteres + ", plazoDias=" + plazoDias + ", tipoDeInversion="
-				+ tipoDeInversion + ", toString()=" + super.toString() + "]";
+				+ tipoDeInversion + "Fecha de vencimiento :"+ fechaDeVencimiento +" ]";
 	}
+
+
+
 
 
 	

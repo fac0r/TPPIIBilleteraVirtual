@@ -89,6 +89,21 @@ public class Usuario {
 		return  misCuentas ;
 	}
 
+	private double totalInvertido() {
+		double total=0;
+		for(Cuenta c : cuentas.values() ) {
+			
+				total = total + c.getSaldoInvertido();
+				
+			}
+		return total;
+		}
+	
+	
+	public double obtenerTotalInvertido () {
+		return totalInvertido();
+	}
+	
 	
 	@Override
 	public String toString() {

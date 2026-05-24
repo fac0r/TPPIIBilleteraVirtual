@@ -27,13 +27,14 @@ public class CuentaPremium extends Cuenta {
 	@Override
 	public void actualizarSaldoDisponible() {
 		 
-		 setSaldoDisponible(getSaldoTotal()-getSaldoInvertido()- encaje);
+		 setSaldoDisponible(obtenerSaldoTotal()-getSaldoInvertido()- encaje);
 		 
 	 }
+
 	 
 	@Override
 	public String toString() {
-		return "CuentaPremium [toString()=" + super.toString() + "]";
+		return "CuentaPremium [" + super.toString() + "]";
 	}
 
 
