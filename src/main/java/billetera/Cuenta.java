@@ -71,6 +71,8 @@ public abstract class Cuenta {
 		 actualizarVolumenTransacciones ();
 	 }
 	 
+	
+	 
 	 public void emitirTransferencia (double monto) {
 		 
 		 if (!hayDisponibilidadParaRealizarOperacion(monto)) {

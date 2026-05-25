@@ -85,10 +85,41 @@ public abstract class Inversion extends Actividad {
 		}
 	
 		
-	public abstract double  calcularRentabilidadDeInversion (LocalDate fechaDeCancelacion);
-		
-	public abstract double precancelar();
 
+	public double calcularRentabilidadDeInversion(LocalDate fechaDeCancelacion) {
+
+		double rentabilidad = mostrarMontoDouble() *( mostrarTasaInteres()/365) * (cantidadDeDiasTranscurridosEnInversion (mostrarFecha(), fechaDeCancelacion));
+
+        // monto_invertido x (taza_interes / 365 dias_del_año) * cant_dias
+
+		
+		return rentabilidad;
+	}
+
+	
+	
+	public double cancelar() {
+		
+	double rentabilidad = calcularRentabilidadDeInversion(Utilitarios.hoy());
+	cambiarEstadoDeInversion(EstadoInversion.FINALIZADA);
+	
+	
+	
+	return rentabilidad;
+		
+	}
+	
+	
+	public double precancelar() {
+		
+	double rentabilidad = calcularRentabilidadDeInversion(Utilitarios.hoy());
+	cambiarEstadoDeInversion(EstadoInversion.PRECANCELADA);
+	
+	double rentabilidadEnPrecancelacion = rentabilidad/2;
+	
+	return rentabilidadEnPrecancelacion;
+		
+	}
 		
 	 
 
@@ -100,10 +131,6 @@ public abstract class Inversion extends Actividad {
 		return getFechaDeVencimiento();
 	}
 
-	public double cancelar() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
 
 	private String getCvuAsociado() {

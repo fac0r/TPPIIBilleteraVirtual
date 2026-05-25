@@ -29,41 +29,7 @@ public class RentaFija extends Inversion {
 
 	
 
-	@Override
-	public double calcularRentabilidadDeInversion(LocalDate fechaDeCancelacion) {
-
-		double rentabilidad = mostrarMontoDouble() *( mostrarTasaInteres()/365) * (cantidadDeDiasTranscurridosEnInversion (mostrarFecha(), fechaDeCancelacion));
-
-        // monto_invertido x (taza_interes / 365 dias_del_año) * cant_dias
-
-		
-		return rentabilidad;
-	}
-
 	
-	@Override
-	public double cancelar() {
-		
-	double rentabilidad = calcularRentabilidadDeInversion(Utilitarios.hoy());
-	cambiarEstadoDeInversion(EstadoInversion.FINALIZADA);
-	
-	
-	
-	return rentabilidad;
-		
-	}
-	
-	@Override
-	public double precancelar() {
-		
-	double rentabilidad = calcularRentabilidadDeInversion(Utilitarios.hoy());
-	cambiarEstadoDeInversion(EstadoInversion.PRECANCELADA);
-	
-	double rentabilidadEnPrecancelacion = rentabilidad/2;
-	
-	return rentabilidadEnPrecancelacion;
-		
-	}
 
 
 

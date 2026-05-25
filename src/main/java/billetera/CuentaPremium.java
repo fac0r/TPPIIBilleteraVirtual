@@ -16,7 +16,7 @@ public class CuentaPremium extends Cuenta {
 	
 	public static Cuenta crearCuentaPremium(String cvu, String alias, String dniUsuario, double depositoInicial ) {
 		
-		 /*if (depositoInicial < ControlDeCuentas.MINIMOCUENTAPREMIUM) {
+		/* if (depositoInicial < ControlDeCuentas.MINIMOCUENTAPREMIUM) {
 		        throw new IllegalArgumentException("El depósito inicial no cumple el mínimo requerido");
 		    }*/
 		

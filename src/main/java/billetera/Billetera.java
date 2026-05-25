@@ -164,18 +164,46 @@ public class Billetera implements IBilletera {
 		
 	}
 	
+	
+	private void registrarTransferenciaRechazada(String cvuOrigen, String cvuDestino, double monto) {
+		
+		  Cuenta cuentaOrigen = cuentasPorCvu.get(cvuOrigen);
+		  Cuenta cuentaDestino = cuentasPorCvu.get(cvuDestino);
+		  
+		  
+		
+		Transferencia transferencia =crearActividadTransferencia(cvuOrigen, cvuDestino, monto, false);	
+		   agregarTransferenciaAlHistorial(transferencia);
+		   
+		   cuentaOrigen.agregarActividad(transferencia.getIdActividad(), transferencia);
+		    cuentaDestino.agregarActividad(transferencia.getIdActividad(), transferencia);
+		   
+		    agregarActividadAHistorialGlobal(transferencia);
+
+		
+	}
+	
 	@Override
 	public void realizarTransferencia(String cvuOrigen, String cvuDestino, double monto) {
 		
 		  Cuenta cuentaOrigen = cuentasPorCvu.get(cvuOrigen);
 		  Cuenta cuentaDestino = cuentasPorCvu.get(cvuDestino);
+
+		boolean comprobante = true;
 		  
-		  cuentaOrigen.emitirTransferencia(monto);
-		  cuentaDestino.recibirTransferencia(monto);
-		  
-		  LocalDate fecha= Utilitarios.hoy();
-		 
-		  boolean comprobante=true;
+		    try {
+		        cuentaOrigen.emitirTransferencia(monto);
+		        try {
+		            cuentaDestino.recibirTransferencia(monto);
+		        } catch (IllegalStateException e) {
+		            cuentaOrigen.aumentarSaldoTotal(monto); // revertir débito
+		            registrarTransferenciaRechazada(cvuOrigen, cvuDestino, monto);
+		            throw e; 
+		        }
+		    } catch (IllegalArgumentException e) {
+		        registrarTransferenciaRechazada(cvuOrigen, cvuDestino, monto);
+		        throw e;
+		    }
 		  
 		   Transferencia transferencia =crearActividadTransferencia(cvuOrigen, cvuDestino, monto, comprobante);	
 		   agregarTransferenciaAlHistorial(transferencia);
@@ -468,7 +496,14 @@ public class Billetera implements IBilletera {
 				String cvuCuenta= inversion.obtenerCvuAsociado();
 				int  idInversion= formatearIdDeInversionesYTransferencias(inversion.mostrarIdActividad());
 				cancelarInversion(dniUsuario, cvuCuenta, idInversion);
+				
+				System.out.println("La inversion existe");
+				System.out.println(inversionActiva(idInversion));
+				
 				iterador.remove();
+				
+				System.out.println("La inversion tiene que dejar de existir");
+				System.out.println(inversionActiva(idInversion));
 				
 			}
 		}

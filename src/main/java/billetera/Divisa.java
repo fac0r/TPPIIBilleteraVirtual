@@ -83,7 +83,7 @@ public class Divisa extends Inversion {
 		    double rentabilidadDeLaDivisa = equivalenteEnDivisa * (mostrarTasaInteres() / 365) 
 		                          * cantidadDeDiasTranscurridosEnInversion(mostrarFecha(), fechaDeCancelacion);
 
-		    return rentabilidadDeLaDivisa;
+		    return rentabilidadDeLaDivisa; //Los intereses en la divisa
 		}
 		
 		
@@ -97,15 +97,17 @@ public class Divisa extends Inversion {
 		
 		
 		
-		double equivalenteEnDivisa = mostrarMontoDouble() / obtenerPrecioDivisa(); //Equivalencia en dolares
+		double equivalenteEnDivisa = mostrarMontoDouble() / obtenerPrecioDivisa(); //Equivalencia en divisa
 		double cotizacionActual = Utilitarios.consultarCotizacion(obtenerTipoDivisa());
 		
 		
-		double gananciaCapital = equivalenteEnDivisa * (cotizacionActual - obtenerPrecioDivisa());
+		double diferenciaDeCapitalEnPesos = (cotizacionActual - obtenerPrecioDivisa());
 
-		double interesesEnPesos= rentabilidadEnPrecancelacion * cotizacionActual;
+		double gananciaDeCapitalEnPesos= equivalenteEnDivisa * diferenciaDeCapitalEnPesos;
 		
-		double retornoFinal= interesesEnPesos + gananciaCapital;
+		double interesesTotalesEnPesos= rentabilidadEnPrecancelacion * cotizacionActual;
+		
+		double retornoFinal= interesesTotalesEnPesos + gananciaDeCapitalEnPesos;
 		
 		return  retornoFinal;
 		 
@@ -123,11 +125,12 @@ public class Divisa extends Inversion {
 			double cotizacionActual = Utilitarios.consultarCotizacion(obtenerTipoDivisa());
 			
 			
-			double gananciaCapital = equivalenteEnDivisa * (cotizacionActual - obtenerPrecioDivisa());
+			double diferenciaDeCapitalEnPesos = (cotizacionActual - obtenerPrecioDivisa());
+			double gananciaDeCapitalEnPesos= equivalenteEnDivisa * diferenciaDeCapitalEnPesos;
 
-			double interesesEnPesos= rentabilidad * cotizacionActual;
+			double interesesTotalesEnPesos= rentabilidad * cotizacionActual;
 			
-			double retornoFinal= interesesEnPesos + gananciaCapital;
+			double retornoFinal= interesesTotalesEnPesos + gananciaDeCapitalEnPesos;
 			
 			
 			return  retornoFinal;
