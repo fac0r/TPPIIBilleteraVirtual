@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -177,6 +178,7 @@ public class Billetera implements IBilletera {
 		  boolean comprobante=true;
 		  
 		   Transferencia transferencia =crearActividadTransferencia(cvuOrigen, cvuDestino, monto, comprobante);	
+		   agregarTransferenciaAlHistorial(transferencia);
 		   
 		   cuentaOrigen.agregarActividad(transferencia.getIdActividad(), transferencia);
 		    cuentaDestino.agregarActividad(transferencia.getIdActividad(), transferencia);
@@ -189,6 +191,15 @@ public class Billetera implements IBilletera {
 		
 		historialGlobal.put(actividad.mostrarIdActividad(), actividad);
 		
+	}
+	
+	private void agregarTransferenciaAlHistorial(Transferencia transferencia) {
+		transferencias.put(transferencia.mostrarIdActividad(),transferencia);
+		
+	}
+	
+	private void agregarInversionAlHistorial (Inversion inversion) { 
+		inversiones.put(inversion.mostrarIdActividad(), inversion);
 	}
 	
 	//Este metodo cambia de String a int el id de la actividad
@@ -204,6 +215,7 @@ public class Billetera implements IBilletera {
 	
 		
 		RentaFija inversion=  RentaFija.crearInversion(dni, cvu, monto, plazoDias); 
+		agregarInversionAlHistorial (inversion);
 		
 		String idDeLaInversion = inversion.mostrarIdActividad();
 		System.out.println("ASI SE IMPRIME EL ID ACTIVIDAD");
@@ -228,6 +240,7 @@ public class Billetera implements IBilletera {
 	public int realizarInversionDivisa(String dni, String cvu, double monto, int plazoDias, String divisa,
 			double tasa) {
 		Divisa inversion = Divisa.crearInversion(dni, cvu, monto, plazoDias,divisa,tasa); 
+		agregarInversionAlHistorial (inversion);
 		String idDeLaInversion = inversion.mostrarIdActividad();
 		System.out.println("ASI SE IMPRIME EL ID ACTIVIDAD");
 		System.out.println(idDeLaInversion);
@@ -256,6 +269,7 @@ public class Billetera implements IBilletera {
 			throw new IllegalArgumentException ("El monto minimo para inversiones de Fondo de Liquidez es 20 millones");
 		}
 		FondoLiquidez inversion = FondoLiquidez.crearInversion(dni, cvu, monto, plazoDias); 
+		agregarInversionAlHistorial (inversion);
 		String idDeLaInversion = inversion.mostrarIdActividad();
 		System.out.println("ASI SE IMPRIME EL ID ACTIVIDAD");
 		System.out.println(idDeLaInversion);
@@ -302,7 +316,32 @@ public class Billetera implements IBilletera {
 		c.restarSaldoInvertido(inversion.mostrarMontoDouble());
 		c.aumentarSaldoTotal(rendimiento);
 		
+		inversiones.remove(id);
+		
 
+	}
+	
+
+	public void cancelarInversion(String dni, String cvu, int idInversion) {
+		
+		
+		
+		Cuenta c = cuentasPorCvu.get(cvu);
+		
+		inversionExiste(c, idInversion);
+		
+		String id = String.valueOf(idInversion);
+		Map <String, Actividad> actividadesDeLaCuenta=c.accesoGetHistorialCuenta();
+		Inversion inversion = (Inversion)actividadesDeLaCuenta.get(id);
+		
+	
+		double rendimiento = inversion.cancelar();
+		
+
+		
+		c.restarSaldoInvertido(inversion.mostrarMontoDouble());
+		c.aumentarSaldoTotal(rendimiento);
+		
 	}
 
 	@Override
@@ -411,7 +450,33 @@ public class Billetera implements IBilletera {
 		}
 		return cuentasConMayorVolumen;
 		}
+
+
+
+	@Override
+	public void procesarInversionesQueVencenHoy() {
 		
 	
+		Iterator <Inversion> iterador= inversiones.values().iterator();
+		
+		while(iterador.hasNext()) {
+			Inversion inversion= iterador.next();
+		
+			
+			if (inversion.obtenerFechaDeVencimiento().equals(Utilitarios.hoy())) {
+				String dniUsuario= inversion.obtenerDniAsociado();
+				String cvuCuenta= inversion.obtenerCvuAsociado();
+				int  idInversion= formatearIdDeInversionesYTransferencias(inversion.mostrarIdActividad());
+				cancelarInversion(dniUsuario, cvuCuenta, idInversion);
+				iterador.remove();
+				
+			}
+		}
+		
+	}
+		
+	public boolean inversionActiva(int idInversion) {
+	    return inversiones.containsKey(String.valueOf(idInversion));
+	}
 
 }

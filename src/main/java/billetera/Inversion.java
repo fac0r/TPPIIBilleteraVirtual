@@ -92,6 +92,40 @@ public abstract class Inversion extends Actividad {
 		
 	 
 
+	private LocalDate getFechaDeVencimiento() {
+		return fechaDeVencimiento;
+	}
+
+	public LocalDate obtenerFechaDeVencimiento() {
+		return getFechaDeVencimiento();
+	}
+
+	public double cancelar() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	private String getCvuAsociado() {
+		return cvuAsociado;
+	}
+
+	public String obtenerCvuAsociado() {
+
+	return getCvuAsociado(); }	
+	
+	
+
+	private String getDniAsociado() {
+		return dniAsociado;
+	}
+	
+	public String obtenerDniAsociado() {
+		return getDniAsociado();
+	}
+
+
+
 	@Override
 	public String toString() {
 		return "Inversion [" + super.toString() + "cvuAsociado= "  + cvuAsociado + 
@@ -99,6 +133,8 @@ public abstract class Inversion extends Actividad {
 				+ estadoInversion + ", tasaInteres=" + tasaInteres + ", plazoDias=" + plazoDias + ", tipoDeInversion="
 				+ tipoDeInversion + "Fecha de vencimiento :"+ fechaDeVencimiento +" ]";
 	}
+
+
 
 
 

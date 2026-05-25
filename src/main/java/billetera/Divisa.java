@@ -112,7 +112,27 @@ public class Divisa extends Inversion {
 			
 		}
 
+		
+		@Override
+		public double cancelar() {
+			
+			double rentabilidad = calcularRentabilidadDeInversion(Utilitarios.hoy());
+			cambiarEstadoDeInversion(EstadoInversion.FINALIZADA);
+		
+			double equivalenteEnDivisa = mostrarMontoDouble() / obtenerPrecioDivisa(); //Equivalencia en dolares
+			double cotizacionActual = Utilitarios.consultarCotizacion(obtenerTipoDivisa());
+			
+			
+			double gananciaCapital = equivalenteEnDivisa * (cotizacionActual - obtenerPrecioDivisa());
 
+			double interesesEnPesos= rentabilidad * cotizacionActual;
+			
+			double retornoFinal= interesesEnPesos + gananciaCapital;
+			
+			
+			return  retornoFinal;
+			
+		}
 
 
 

@@ -41,7 +41,17 @@ public class RentaFija extends Inversion {
 	}
 
 	
+	@Override
+	public double cancelar() {
+		
+	double rentabilidad = calcularRentabilidadDeInversion(Utilitarios.hoy());
+	cambiarEstadoDeInversion(EstadoInversion.FINALIZADA);
 	
+	
+	
+	return rentabilidad;
+		
+	}
 	
 	@Override
 	public double precancelar() {

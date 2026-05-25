@@ -14,6 +14,9 @@ public class CuentaRegular extends Cuenta {
 	public static Cuenta crearCuentaRegular(String cvu, String alias, String dniUsuario) {
 	    return new CuentaRegular(cvu, alias, dniUsuario);
 	}
+	
+	
+	
 
 	@Override
 	public String toString() {
